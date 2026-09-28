@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Agregar stock{% endblock %}
+{% block content %}
+<h2>Agregar stock</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar</button>
+  <a href="{% url 'inventario:stock_list' %}">Cancelar</a>
+</form>
+<p>
+  ¿Falta un producto o una bodega?
+  <a href="/admin/inventario/producto/add/">Crear producto</a>
+  <a href="/admin/inventario/bodega/add/">Crear bodega</a>
+</p>
+{% endblock %}
