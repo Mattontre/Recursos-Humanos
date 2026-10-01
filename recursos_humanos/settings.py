@@ -119,6 +119,7 @@ USE_TZ = True
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
 LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = 'inicio:home'
 
 STATIC_URL = 'static/'
 

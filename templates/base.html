@@ -4,17 +4,35 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Recursos Humanos{% endblock %}</title>
+    <title>{% block title %}Inventario{% endblock %} · Sistema de Inventario</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/tema.js' %}"></script>
 </head>
 <body>
-    <header>
-        <h1>Sistema de Inventario</h1>
+    <header class="barra">
+        <div class="barra-interior">
+            <a class="marca" href="{% url 'inicio:home' %}">Sistema de Inventario</a>
+            {% if user.is_authenticated %}
+            <nav class="menu" aria-label="Principal">
+                <a href="{% url 'inicio:home' %}" {% if request.resolver_match.view_name == 'inicio:home' %}aria-current="page"{% endif %}>Inicio</a>
+                <a href="{% url 'inventario:stock_list' %}" {% if request.resolver_match.view_name == 'inventario:stock_list' %}aria-current="page"{% endif %}>Stock</a>
+                <a href="{% url 'inventario:stock_create' %}" {% if request.resolver_match.view_name == 'inventario:stock_create' %}aria-current="page"{% endif %}>Agregar stock</a>
+            </nav>
+            {% endif %}
+            <div class="acciones">
+                <button type="button" id="boton-tema" aria-pressed="false">Tema oscuro</button>
+                {% if user.is_authenticated %}
+                <span class="usuario">{{ user.get_username }}</span>
+                <form method="post" action="{% url 'admin:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Salir</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
     </header>
     <main>
-        {% block content %}
-        <!-- Contenido específico de cada página -->
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 </body>
 </html>

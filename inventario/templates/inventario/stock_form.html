@@ -2,15 +2,22 @@
 {% block title %}Agregar stock{% endblock %}
 {% block content %}
 <h2>Agregar stock</h2>
-<form method="post">
+<p class="ayuda">Elige el producto, la bodega y la cantidad que hay en ella.</p>
+
+<form method="post" class="formulario">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Guardar</button>
-  <a href="{% url 'inventario:stock_list' %}">Cancelar</a>
+  <div class="botones">
+    <button type="submit">Guardar</button>
+    <a href="{% url 'inventario:stock_list' %}">Cancelar</a>
+  </div>
 </form>
-<p>
+
+{% if user.is_staff %}
+<p class="nota">
   ¿Falta un producto o una bodega?
-  <a href="/admin/inventario/producto/add/">Crear producto</a>
-  <a href="/admin/inventario/bodega/add/">Crear bodega</a>
+  <a href="{% url 'admin:inventario_producto_add' %}">Crear producto</a> ·
+  <a href="{% url 'admin:inventario_bodega_add' %}">Crear bodega</a>
 </p>
+{% endif %}
 {% endblock %}

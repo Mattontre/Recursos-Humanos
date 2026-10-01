@@ -1,21 +1,47 @@
 {% extends 'base.html' %}
 {% block title %}Stock{% endblock %}
 {% block content %}
-<h2>Stock por bodega</h2>
-<p><a href="{% url 'inventario:stock_create' %}">Agregar stock</a></p>
+<div class="encabezado-pagina">
+    <h2>Stock por bodega</h2>
+    <a class="boton boton-primario" href="{% url 'inventario:stock_create' %}">Agregar stock</a>
+</div>
+
+<div class="tabla-envoltorio">
 <table>
-  <thead><tr><th>SKU</th><th>Producto</th><th>Bodega</th><th>Cantidad</th></tr></thead>
+  <thead>
+    <tr>
+      <th>SKU</th><th>Producto</th><th>Bodega</th>
+      <th class="num">Cantidad</th><th class="num">Mínimo</th><th>Estado</th>
+    </tr>
+  </thead>
   <tbody>
   {% for s in page_obj %}
     <tr>
       <td>{{ s.producto.sku }}</td>
       <td>{{ s.producto.nombre }}</td>
       <td>{{ s.bodega.nombre }}</td>
-      <td>{{ s.cantidad }}</td>
+      <td class="num">{{ s.cantidad }}</td>
+      <td class="num">{{ s.producto.stock_minimo }}</td>
+      <td>
+        {% if s.cantidad < s.producto.stock_minimo %}
+          <span class="etiqueta bajo">Bajo el mínimo</span>
+        {% else %}
+          <span class="etiqueta ok">Normal</span>
+        {% endif %}
+      </td>
     </tr>
   {% empty %}
-    <tr><td colspan="4">Sin registros.</td></tr>
+    <tr><td colspan="6" class="vacio">Aún no hay stock registrado. <a href="{% url 'inventario:stock_create' %}">Agrega el primero</a>.</td></tr>
   {% endfor %}
   </tbody>
 </table>
+</div>
+
+{% if page_obj.has_other_pages %}
+<nav class="paginas" aria-label="Páginas">
+  {% if page_obj.has_previous %}<a class="boton" href="?page={{ page_obj.previous_page_number }}">Anterior</a>{% endif %}
+  <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a class="boton" href="?page={{ page_obj.next_page_number }}">Siguiente</a>{% endif %}
+</nav>
+{% endif %}
 {% endblock %}

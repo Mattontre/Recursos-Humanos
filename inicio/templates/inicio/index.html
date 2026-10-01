@@ -2,6 +2,17 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-    <h1>Bienvenido a la página de Recursos Humanos</h1>
-    <p>Esta es la página de inicio de la aplicación de Recursos Humanos.</p>
+<h1>Inventario</h1>
+<p class="ayuda">Consulta cuánto hay de cada producto en cada bodega y registra nuevas existencias.</p>
+
+<section class="resumen" aria-label="Resumen">
+    <div class="dato"><strong>{{ total_productos }}</strong><span>Productos activos</span></div>
+    <div class="dato"><strong>{{ total_bodegas }}</strong><span>Bodegas activas</span></div>
+    <div class="dato {% if bajo_minimo %}atencion{% endif %}"><strong>{{ bajo_minimo }}</strong><span>Registros bajo el stock mínimo</span></div>
+</section>
+
+<p>
+    <a class="boton boton-primario" href="{% url 'inventario:stock_list' %}">Ver stock</a>
+    <a class="boton" href="{% url 'inventario:stock_create' %}">Agregar stock</a>
+</p>
 {% endblock %}
